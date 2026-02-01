@@ -3,7 +3,7 @@ variable "aws_region" {
 }
 
 variable "vpc_id" {
-  description = "Your VPC ID"
+  description = "vpc-08ea4136d31e1607d"
 }
 
 variable "subnet_ids" {
@@ -12,10 +12,10 @@ variable "subnet_ids" {
 }
 
 variable "ami_id" {
-  default = "ami-0f5ee92e2d63afc18" # Amazon Linux (update if needed)
+  default = "ami-019715e0d74f695be" # Amazon Linux (update if needed)
 }
 
 variable "instance_type" {
-  default = "t2.micro"
+  default = "t3.micro"
 }
 
