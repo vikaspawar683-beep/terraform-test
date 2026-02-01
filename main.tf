@@ -6,7 +6,7 @@ resource "aws_vpc" "main" {
 }
 
 resource "aws_internet_gateway" "igw_main" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = vpc-08ea4136d31e1607d
   tags = {
     "Name" = "igw-main"
   }
@@ -14,7 +14,7 @@ resource "aws_internet_gateway" "igw_main" {
 
 resource "aws_subnet" "public_1" {
   cidr_block = "10.0.1.0/24"
-  vpc_id     = aws_vpc.main.id
+  vpc_id     = vpc-08ea4136d31e1607d
 
   availability_zone = "ap-south-1a"
   tags = {
@@ -24,7 +24,7 @@ resource "aws_subnet" "public_1" {
 
 resource "aws_subnet" "public_2" {
   cidr_block = "10.0.2.0/24"
-  vpc_id = aws_vpc.main.id
+  vpc_id = vpc-08ea4136d31e1607d
   availability_zone = "ap-south-1b"
 
   tags = {
@@ -33,7 +33,7 @@ resource "aws_subnet" "public_2" {
 }
 
 resource "aws_route_table" "my_route_table" {
-  vpc_id = aws_vpc.main.id
+  vpc_id  = vpc-08ea4136d31e1607d
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw_main.id
@@ -53,7 +53,7 @@ resource "aws_route_table_association" "route-table-association-2" {
 resource "aws_security_group" "alb_sg" {
   name        = "alb-sg"
   description = "Allow http trafic"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = vpc-08ea4136d31e1607d
 
   ingress {
     from_port   = 80
@@ -77,13 +77,13 @@ resource "aws_security_group" "alb_sg" {
 resource "aws_security_group" "ec2_sg" {
   name        = "ec2_sg"
   description = "Allow http trafic"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = vpc-08ea4136d31e1607d
 
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    security_groups = [aws_security_group.alb_sg.id]
+    security_groups = [sg-024f00121efa469ae]
   }
 
   egress {
@@ -103,7 +103,7 @@ resource "aws_security_group" "ec2_sg" {
 resource "aws_instance" "main_1" {
   instance_type = "t3.micro"
   subnet_id     = aws_subnet.public_1.id
-  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+  vpc_security_group_ids = [sg-024f00121efa469ae]
   ami           = "ami-019715e0d74f695be"
   associate_public_ip_address = true
   tags = {
@@ -124,7 +124,7 @@ EOF
 resource "aws_instance" "main_2" {
   instance_type = "t3.micro"
   subnet_id     = aws_subnet.public_2.id
-  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+  vpc_security_group_ids = [sg-024f00121efa469ae]
   ami           = "ami-019715e0d74f695be"
   associate_public_ip_address = true
   tags = {
@@ -152,7 +152,7 @@ resource "aws_lb" "alb" {
     aws_subnet.public_2.id
   ]
 
-  security_groups = [aws_security_group.alb_sg.id]
+  security_groups = [sg-024f00121efa469ae]
 }
 
 
