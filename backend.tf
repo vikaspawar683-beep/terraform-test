@@ -3,7 +3,6 @@ terraform {
     bucket         = "s3-bucket-beckend"
     key            = "terraform.tfstate"
     region         = "ap-south-1"
-    dynamodb_table = "terraform-lock-table"
-    encrypt        = true
+    #dynamodb_table = "terraform-lock-table"
   }
 }
